@@ -11,6 +11,10 @@ import { useMainStore } from "@/stores/main";
 import type { ThemeConfig } from "ant-design-vue/es/config-provider/context";
 import { computed, onMounted, watch } from "vue";
 
+const defaultThemeColors = {
+    "--grey-light": "#c3c3c3"
+}
+
 export default function useTheme(onChange?: (primary: string) => void) {
     const { theme, changePrimary } = useMainStore()
 
@@ -29,6 +33,12 @@ export default function useTheme(onChange?: (primary: string) => void) {
         document.documentElement.style.setProperty('--primary-contrast', theme.primary.contrastText)
     }
 
+    const setDefaultColors = () => {
+        Object.keys(defaultThemeColors).forEach(key => {
+            document.documentElement.style.setProperty(key, defaultThemeColors[key])
+        })
+    }
+
     const initColors = () => {
         const storageThemeColor = localStorage.getItem(THEME_COLOR_KEY)
         if (storageThemeColor) {
@@ -39,6 +49,7 @@ export default function useTheme(onChange?: (primary: string) => void) {
 
     onMounted(() => {
         initColors()
+        setDefaultColors()
     })
 
     watch(theme, () => {

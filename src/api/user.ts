@@ -12,5 +12,8 @@ import httpService from "./axios";
 export const userService = {
   login(param: LoginParams) {
     return httpService.post("/api/auth/login", param, {formData: true});
+  },
+  logout() {
+    return httpService.post("/api/auth/logout");
   }
 };

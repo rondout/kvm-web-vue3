@@ -2,11 +2,11 @@
  * @Author: shufei.han
  * @Date: 2024-08-01 09:38:34
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-15 11:02:19
+ * @LastEditTime: 2024-10-15 18:36:13
  * @FilePath: \kvm-web-vue3\src\stores\main.ts
  * @Description: 
  */
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { defaultTheme } from '@/models/theme.model'
 import { darken, lighten } from 'color2k'
@@ -19,6 +19,11 @@ export const useMainStore = defineStore('main', () => {
     theme.value.primary.dark = darken(value, 0.2)
     theme.value.primary.light = lighten(value, 0.2)
   }
+
+  onMounted(() => {
+    // console.log('mainStore mounted')
+    changePrimary("#484b51")
+  })
 
   return { theme, changePrimary }
 })

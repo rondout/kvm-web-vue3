@@ -11,3 +11,13 @@ body {
 #app {
   height: 100%;
 }
+
+$primary: var(--primary);
+$primary-light: var(--primary-light);
+$primary-dark: var(--primary-dark);
+$primary-contrast: var(--primary-contrast);
+
+
+.color-primary {
+  color: $primary;
+}

@@ -3,16 +3,18 @@
  * @Author: shufei.han
  * @LastEditors: shufei.han
  * @Date: 2024-05-13 10:24:40
- * @LastEditTime: 2024-10-15 12:06:01
+ * @LastEditTime: 2024-10-15 18:26:20
  */
 import { BaseResponse } from "@/models/request.model";
 import axios, {
+    AxiosError,
     AxiosInstance,
     AxiosResponse,
     CreateAxiosDefaults,
     InternalAxiosRequestConfig,
     type AxiosRequestConfig,
 } from "axios";
+import { handleResponseError } from "./error";
 
 declare module "axios" {
     interface AxiosRequestConfig {
@@ -81,12 +83,11 @@ export class HttpService {
 
         this.instance.interceptors.response.use(
             (response) => {
-                console.log(response);
                 return this.configResponse(response);
             },
 
-            (error) => {
-                console.log(error);
+            (error: AxiosError) => {
+                handleResponseError(error)
                 return this.errorHandler?.(error)
             }
         );
