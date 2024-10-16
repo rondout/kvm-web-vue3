@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-15 15:04:33
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-15 18:04:47
+ * @LastEditTime: 2024-10-16 09:43:46
  * @FilePath: \kvm-web-vue3\src\models\kvm.model.ts
  * @Description: 
  */
@@ -23,10 +23,10 @@ export interface KvmExtrasAppInfo {
 
 
 export enum KvmExtraApps {
-    IPMI = "ipmi",
+    // IPMI = "ipmi",
     JANUS = "janus",
-    JANUS_STATIC = "janus_static",
-    VNC = "vnc",
+    // JANUS_STATIC = "janus_static",
+    // VNC = "vnc",
     WEBTERM = "webterm",
     KVM = "kvm"
 }

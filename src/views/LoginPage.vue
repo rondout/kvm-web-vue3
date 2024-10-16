@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-15 10:44:39
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-15 11:49:24
+ * @LastEditTime: 2024-10-16 10:20:55
  * @FilePath: \kvm-web-vue3\src\views\LoginPage.vue
  * @Description: 
 -->
@@ -80,7 +80,9 @@ const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
 
 <style lang="scss" scoped>
 .login-container {
+    background-color: var(--primary);
     .login-content {
+        background-color: #fff;
         padding: 16px;
         border: 1px solid var(--primary);
         border-radius: 8px;

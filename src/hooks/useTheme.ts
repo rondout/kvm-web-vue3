@@ -2,8 +2,8 @@
  * @Author: shufei.han
  * @Date: 2024-08-01 09:58:58
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-08-27 18:37:42
- * @FilePath: \micro-frontend\base-app\src\hooks\useTheme.ts
+ * @LastEditTime: 2024-10-16 10:25:26
+ * @FilePath: \kvm-web-vue3\src\hooks\useTheme.ts
  * @Description: 
  */
 import { THEME_COLOR_KEY } from "@/models/theme.model";
@@ -12,7 +12,7 @@ import type { ThemeConfig } from "ant-design-vue/es/config-provider/context";
 import { computed, onMounted, watch } from "vue";
 
 const defaultThemeColors = {
-    "--grey-light": "#c3c3c3"
+    "--grey-light": "#ededed"
 }
 
 export default function useTheme(onChange?: (primary: string) => void) {

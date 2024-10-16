@@ -15,5 +15,8 @@ export const userService = {
   },
   logout() {
     return httpService.post("/api/auth/logout");
+  },
+  checkLoginStatus() {
+    return httpService.get("/api/auth/check");
   }
 };

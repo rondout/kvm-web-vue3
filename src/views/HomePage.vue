@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-15 14:42:08
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-15 18:40:52
+ * @LastEditTime: 2024-10-16 10:25:51
  * @FilePath: \kvm-web-vue3\src\views\HomePage.vue
  * @Description: 
 -->
@@ -11,7 +11,7 @@
         <a-spin :spinning="kvmStore.kvmInfoLoading">
             <div class="home-content">
                 <div class="header flex-start">
-                    <div class="logo-text color-primary">Gl-KVM</div>
+                    <KvmLogo />
                 </div>
                 <a-divider style="background-color: #fff; margin: 12px 0;"></a-divider>
                 <div class="server-info">
@@ -42,14 +42,21 @@
 </template>
 
 <script setup lang="ts">
+import KvmLogo from '@/components/KvmLogo.vue';
 import { ExtraKvmApp } from '@/models/kvm.model';
 import { useKvmStore } from '@/stores/kvm';
 import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const kvmStore = useKvmStore();
+const router = useRouter();
 
 const handleAppClick = (app: ExtraKvmApp) => {
     app.onClick?.();
+    console.log(app);
+    if(app.path) {
+        router.push(app.path);
+    }
 }
 
 onMounted(async () => {
@@ -66,14 +73,6 @@ onMounted(async () => {
         border-radius: 8px;
         color: var(--primary-contrast);
 
-        .header {
-            .logo-text {
-                font-size: 32px;
-                background-color: var(--grey-light);
-                border-radius: 4px;
-                padding: 4px 8px;
-            }
-        }
         font-size: 16px;
         .server-link {
             color: #fff;
@@ -94,7 +93,7 @@ onMounted(async () => {
                 img {
                     padding-bottom: 5px;
                     height: 50px;
-                    filter: invert(0.7);
+                    filter: invert(0.85);
                 }
 
                 &:hover {
