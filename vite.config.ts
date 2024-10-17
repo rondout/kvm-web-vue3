@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-15 10:42:00
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-15 15:26:57
+ * @LastEditTime: 2024-10-16 15:56:40
  * @FilePath: \kvm-web-vue3\vite.config.ts
  * @Description: 
  */
@@ -19,7 +19,17 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     proxy: {
+      '/api/ws': {
+        target: 'wss://192.168.8.240',
+        changeOrigin: true,
+        secure:false
+      },
       '/api': {
+        target: 'https://192.168.8.240',
+        changeOrigin: true,
+        secure:false
+      },
+      '/stream': {
         target: 'https://192.168.8.240',
         changeOrigin: true,
         secure:false
