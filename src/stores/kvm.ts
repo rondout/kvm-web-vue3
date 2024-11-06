@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-08-01 09:38:34
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-15 18:23:11
+ * @LastEditTime: 2024-11-06 14:23:50
  * @FilePath: \kvm-web-vue3\src\stores\kvm.ts
  * @Description: 
  */
@@ -67,7 +67,7 @@ export const useKvmStore = defineStore('kvm', () => {
         router.push({ name: 'login' })
       }))
     }
-    return appList
+    return appList.filter(item => !!item)
   })
 
   return { kvmInfo, kvmInfoLoading, getKvmInfo, apps }

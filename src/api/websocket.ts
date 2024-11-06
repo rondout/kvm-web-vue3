@@ -6,8 +6,11 @@
  * @FilePath: \kvm-web-vue3\src\api\websocket.ts
  * @Description: 
  */
+export type WebsocketEventType = "open" | "connected" | "message"
+
 export class WebSocketService<T = any> {
     public socket: WebSocket;   
+    private eventCallbacks: Map<WebsocketEventType, (data?: any) => void> = new Map();
     constructor(private url: string, private protocol?: string, private onMessage?: (data: T) => void) {
         this.init();
     }
@@ -20,6 +23,7 @@ export class WebSocketService<T = any> {
     private configSocketLifeCircle() {
         this.socket.onopen = () => {
             console.log('WebSocket connected');
+            this.eventCallbacks.get('open')?.()
         };
         this.socket.onclose = () => {
             console.log('WebSocket disconnected');
@@ -32,6 +36,10 @@ export class WebSocketService<T = any> {
             this.onMessage?.(data)
             
         };
+    }
+
+    public on(eventType: WebsocketEventType, callback: (data?: any) => void) {
+        this.eventCallbacks.set(eventType, callback);
     }
 
     public send(message: string) {

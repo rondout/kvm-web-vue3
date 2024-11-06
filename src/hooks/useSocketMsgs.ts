@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-16 11:35:20
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-16 15:52:46
+ * @LastEditTime: 2024-10-17 10:51:52
  * @FilePath: \kvm-web-vue3\src\hooks\useSocketMsgs.ts
  * @Description: 
  */
@@ -21,8 +21,9 @@ export function useWsApiSocketMsgs() {
     watch(() => msgStore.latestWsApiMessage, (newValue) => {
         switch (newValue.event_type) {
             case WsEventType.STREAMER_STATE:
-                console.log('newValue-stream-state: ', newValue)
-                mjpegUrl.value = generateMjpegUrl()
+                if (!mjpegUrl.value) {
+                    mjpegUrl.value = generateMjpegUrl()
+                }
                 break
         }
     })

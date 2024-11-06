@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-16 11:28:26
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-16 12:12:01
+ * @LastEditTime: 2024-10-17 09:58:04
  * @FilePath: \kvm-web-vue3\src\stores\message.ts
  * @Description: 
  */
@@ -23,19 +23,29 @@ export const useMsgStore = defineStore('msg', () => {
         if (apiWsSocket) {
             return
         }
-        apiWsSocket = new WebSocketService('/api/ws', null, (data) => {
+        const socket = new WebSocketService('/api/ws', null, (data) => {
             latestWsApiMessage.value = data
             msgs.value.push(data)
+        })
+
+        socket.on('open', () => {
+            apiWsSocket = socket
         })
     }
 
     const initJanusWsMsgs = async () => {
+        console.log(janusWsSocket);
+        
         if (janusWsSocket) {
             return
         }
-        janusWsSocket = new WebSocketService('/janus/ws', null, (data) => {
+        const socket = new WebSocketService('/janus/ws', 'janus-protocol', (data) => {
             latestJanusApiMessage.value = data
             msgs.value.push(data)
+        })
+
+        socket.on('open', () => {
+            janusWsSocket = socket
         })
     }
 
