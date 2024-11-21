@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-15 10:42:00
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-15 10:59:25
+ * @LastEditTime: 2024-11-20 18:17:37
  * @FilePath: \kvm-web-vue3\src\main.ts
  * @Description: 
  */
@@ -22,3 +22,5 @@ app.use(router)
 app.use(antDesign)
 
 app.mount('#app')
+
+window.log = console.log

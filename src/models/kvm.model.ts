@@ -116,7 +116,7 @@ export interface WsMessage<T = any> {
 }
 
 export function makeMjpegStreamId() {
-    let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let id = "";
     for (let count = 0; count < 16; ++count) {
         id += chars.charAt(Math.floor(Math.random() * chars.length));

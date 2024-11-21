@@ -23,7 +23,7 @@ import { VideoStreamEnum } from '@/models/kvm.model';
 import { ref } from 'vue';
 import KvmWebRtcPlayer from './KvmWebRtcPlayer.vue';
 
-const mode = ref(VideoStreamEnum.MJPEG);
+const mode = ref(VideoStreamEnum.WEBRTC);
 
 </script>
 

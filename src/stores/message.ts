@@ -34,8 +34,6 @@ export const useMsgStore = defineStore('msg', () => {
     }
 
     const initJanusWsMsgs = async () => {
-        console.log(janusWsSocket);
-        
         if (janusWsSocket) {
             return
         }
