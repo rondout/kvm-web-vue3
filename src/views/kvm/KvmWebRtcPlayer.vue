@@ -24,7 +24,8 @@ import { onMounted, reactive } from 'vue';
 // useJanusWsSocketMsgs()
 const state = reactive({
     orient: 'landscape',
-    allowAudio: true
+    allowAudio: true,
+    state: {}
 })
 
 const setActive = (...args: any) => {

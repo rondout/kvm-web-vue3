@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-11-20 16:21:48
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-21 09:14:32
+ * @LastEditTime: 2024-11-21 10:09:49
  * @FilePath: \kvm-web-vue3\src\models\janus.model.ts
  * @Description: 
  */
@@ -34,7 +34,10 @@ export class JanusStreamer {
     }
 
 
-    ensureStream() {
+    ensureStream(state) {
+        console.log("ENSURE_STREAM", state);
+        
+        this.state = state
         this.ensureJanus()
     }
     initJanus(callback: () => void) {
