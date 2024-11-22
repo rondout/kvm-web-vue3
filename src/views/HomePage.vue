@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-15 14:42:08
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-16 10:25:51
+ * @LastEditTime: 2024-11-22 10:55:50
  * @FilePath: \kvm-web-vue3\src\views\HomePage.vue
  * @Description: 
 -->
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import KvmLogo from '@/components/KvmLogo.vue';
-import { ExtraKvmApp } from '@/models/kvm.model';
+import { ExtraKvmApp, ExtraKvmAppOrigin } from '@/models/kvm.model';
 import { useKvmStore } from '@/stores/kvm';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
@@ -51,11 +51,15 @@ import { useRouter } from 'vue-router';
 const kvmStore = useKvmStore();
 const router = useRouter();
 
-const handleAppClick = (app: ExtraKvmApp) => {
+const handleAppClick = (app: ExtraKvmAppOrigin) => {
     app.onClick?.();
     console.log(app);
     if(app.path) {
-        router.push(app.path);
+        if(app.isOriginal) {
+            location.href = app.path;
+        }else {
+            router.push(app.path);
+        }
     }
 }
 

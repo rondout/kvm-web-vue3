@@ -2,16 +2,19 @@
  * @Author: shufei.han
  * @Date: 2024-11-20 16:21:48
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-21 09:14:32
+ * @LastEditTime: 2024-11-22 18:21:35
  * @FilePath: \kvm-web-vue3\src\models\janus.model.ts
  * @Description: 
  */
 import { Janus } from '@/utils/janus'
+import { OrientationType } from './kvm.model'
 
 type AnyFunction = (...args: any[]) => any
 
-const $ = (id:string) =>  document.getElementById(id) as HTMLVideoElement
+export const $ = (id:string) =>  document.getElementById(id) as (HTMLVideoElement & HTMLImageElement & HTMLMediaElement)
 
+export var $$ = (cls: string[]) => [].slice.call(document.getElementsByClassName(cls));
+export var $$$ = (selector: string) => document.querySelectorAll(selector);
 export class JanusStreamer {
     public _Janus: any
     public janus: any
@@ -26,7 +29,7 @@ export class JanusStreamer {
     public state = null;
     public frames = 0;
 
-    constructor(private setActive: AnyFunction, private setInactive: AnyFunction, private setInfo: AnyFunction, private orient: any, private allow_audio: boolean) {
+    constructor(private setActive: AnyFunction, private setInactive: AnyFunction, private setInfo: AnyFunction, private orient: OrientationType, private allow_audio: boolean) {
         this.initJanus(() => {
             this.ensureJanus()
         })
@@ -150,7 +153,7 @@ export class JanusStreamer {
                         error: (error) => {
                             log("Error on SDP handling:", error);
                             this.setInfo(false, false, error);
-                            //destroyJanus();
+                            this.destroyJanus();
                         },
                     });
                 }
@@ -261,12 +264,17 @@ export class JanusStreamer {
             this.janus.destroy();
         }
         this.__finishJanus();
-        // let stream = $("stream-video").srcObject;
-        // if (stream) {
-        //     for (let track of stream.getTracks()) {
-        //         __removeTrack(track);
-        //     }
-        // }
+        let stream = $("stream-video").srcObject;
+        if (stream) {
+            for (let track of stream.getTracks()) {
+                this.removeTrack(track);
+            }
+        }
+    }
+
+    public stopStream() {
+        this.stop = true
+        this.destroyJanus();
     }
     __finishJanus() {
         if (this.stop) {
@@ -341,7 +349,7 @@ export class JanusStreamer {
                 info = `${this.handle.getBitrate()}`.replace("kbits/sec", "kbps");
                 if (frames !== null) {
                     info += ` / ${Math.max(0, frames - this.frames)} fps dynamic`;
-                    frames = frames;
+                    this.frames = frames;
                 }
             }
             this.setInfo(true, this.isOnline(), info);
@@ -389,17 +397,17 @@ export class JanusStreamer {
 
     removeTrack(track) {
         log("Removing track:", track);
-        // let el = $("stream-video");
-        // if (!el.srcObject) {
-        // 	return;
-        // }
-        // track.stop();
-        // el.srcObject.removeTrack(track);
-        // if (el.srcObject.getTracks().length === 0) {
-        // 	// MediaStream should be destroyed to prevent old picture freezing
-        // 	// on Janus reconnecting.
-        // 	el.srcObject = null;
-        // }
+        let el = $("stream-video");
+        if (!el.srcObject) {
+        	return;
+        }
+        track.stop();
+        el.srcObject.removeTrack(track);
+        if (el.srcObject.getTracks().length === 0) {
+        	// MediaStream should be destroyed to prevent old picture freezing
+        	// on Janus reconnecting.
+        	el.srcObject = null;
+        }
     }
 
     sendStart (jsep) {
@@ -408,4 +416,29 @@ export class JanusStreamer {
 			this.handle.send({ "message": { "request": "start" }, "jsep": jsep });
 		}
 	}
+
+    public getOrientation () {
+        return this.orient;
+    }
+	public isAudioAllowed () {
+        return this.allow_audio;
+    }
+
+	public getName () {
+        return this.allow_audio ? "H.264 + Audio" : "H.264"
+    }
+	public getMode () {
+        "return janus";
+    }
+
+	public getResolution () {
+		let el = $("stream-video");
+		return {
+			// Разрешение видео или элемента
+			"real_width": (el.videoWidth || el.offsetWidth),
+			"real_height": (el.videoHeight || el.offsetHeight),
+			"view_width": el.offsetWidth,
+			"view_height": el.offsetHeight,
+		};
+	};
 }

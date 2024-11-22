@@ -2,13 +2,14 @@
  * @Author: shufei.han
  * @Date: 2024-10-15 15:04:33
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-16 15:48:19
+ * @LastEditTime: 2024-11-22 10:53:48
  * @FilePath: \kvm-web-vue3\src\models\kvm.model.ts
  * @Description:
  */
 import kvmSvg from "@/assets/imgs/kvm.svg";
 import terminalSvg from "@/assets/imgs/terminal.svg";
 import { browserTool } from "./tools";
+import { SelectOptions } from "@gl/main";
 
 export enum VideoStreamEnum {
     MJPEG,
@@ -64,9 +65,21 @@ export class ExtraKvmApp {
     ) { }
 }
 
+export class ExtraKvmAppOrigin extends ExtraKvmApp {
+    public isOriginal: boolean = true
+    constructor(
+        name: string,
+        path: string,
+        icon?: string,
+        onClick?: () => void
+    ) {
+        super(name, path, icon, onClick)
+    }
+}
+
 export const KvmExtraAppsConfigMap = new Map([
     [KvmExtraApps.JANUS, new ExtraKvmApp("KVM", "/kvm", kvmSvg)],
-    [KvmExtraApps.WEBTERM, new ExtraKvmApp("Terminal", "/webterm", terminalSvg)],
+    [KvmExtraApps.WEBTERM, new ExtraKvmAppOrigin("Terminal", "https://192.168.8.240/extras/webterm/ttyd/", terminalSvg)],
 ]);
 
 export enum WsEventType {
@@ -88,26 +101,26 @@ export enum WsEventType {
 
 export interface StreamStateEventInfo {
     limits: {
-        desired_fps: { min: 0; max: 70 };
-        h264_bitrate: { min: 25; max: 20000 };
-        h264_gop: { min: 0; max: 60 };
+        desired_fps: { min: number; max: number };
+        h264_bitrate: { min: number; max: number };
+        h264_gop: { min: number; max: number };
     };
-    params: { desired_fps: 40; quality: 80; h264_bitrate: 5000; h264_gop: 30 };
+    params: { desired_fps: number; quality: number; h264_bitrate: number; h264_gop: number };
     snapshot: { saved: null };
     streamer: {
         instance_id: "";
-        encoder: { type: "M2M-IMAGE"; quality: 80 };
-        h264: { bitrate: 5000; gop: 30; online: true; fps: 25 };
-        sinks: { jpeg: { has_clients: false }; h264: { has_clients: true } };
+        encoder: { type: "M2M-IMAGE"; quality: number };
+        h264: { bitrate: number; gop: number; online: boolean; fps: number };
+        sinks: { jpeg: { has_clients: false }; h264: { has_clients: boolean } };
         source: {
-            resolution: { width: 1920; height: 1080 };
-            online: true;
-            desired_fps: 40;
-            captured_fps: 50;
+            resolution: { width: number; height: number };
+            online: boolean;
+            desired_fps: number;
+            captured_fps: number;
         };
-        stream: { queued_fps: 0; clients: 0; clients_stat: {} };
+        stream: { queued_fps: number; clients: number; clients_stat: {} };
     };
-    features: { quality: true; resolution: false; h264: true };
+    features: { quality: boolean; resolution: false; h264: boolean };
 }
 
 export interface WsMessage<T = any> {
@@ -140,3 +153,24 @@ export function generateMjpegUrl() {
     }
     return path
 }
+
+export enum OrientationType {
+    DEFAULT = 0, // 0
+    RIGHT = 90,  // -90
+    LEFT = 270,   // 90
+    UPSIDE = 180, // 180
+}
+
+export const OrientationTypeMap = new Map([
+    [OrientationType.DEFAULT, "default"],
+    [OrientationType.RIGHT, "90°"],
+    [OrientationType.LEFT, "270°"],
+    [OrientationType.UPSIDE, "180°"],
+])
+
+export const OrientationOptionList = [
+    new SelectOptions(OrientationType.DEFAULT, OrientationTypeMap.get(OrientationType.DEFAULT)),
+    new SelectOptions(OrientationType.LEFT, OrientationTypeMap.get(OrientationType.LEFT)),
+    new SelectOptions(OrientationType.RIGHT, OrientationTypeMap.get(OrientationType.RIGHT)),
+    new SelectOptions(OrientationType.UPSIDE, OrientationTypeMap.get(OrientationType.UPSIDE)),
+]

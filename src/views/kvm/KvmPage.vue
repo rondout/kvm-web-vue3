@@ -2,16 +2,16 @@
  * @Author: shufei.han
  * @Date: 2024-10-16 10:17:54
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-10-17 09:46:09
+ * @LastEditTime: 2024-11-21 11:34:22
  * @FilePath: \kvm-web-vue3\src\views\kvm\KvmPage.vue
  * @Description: 
 -->
 <template>
     <div class="kvm-page-container full-height">
-        <KvmPageHeader v-model:mode="mode"/>
+        <KvmPageHeader v-model:mode="mode" />
         <div class="kvm-page-content">
-            <KvmMjpegPlayer v-if="mode === VideoStreamEnum.MJPEG" />
-            <KvmWebRtcPlayer v-else-if="mode === VideoStreamEnum.WEBRTC" />   
+            <!-- <KvmMjpegPlayer v-if="mode === VideoStreamEnum.MJPEG" /> -->
+            <KvmWebRtcPlayer :state="state.streamerState" v-if="mode === VideoStreamEnum.WEBRTC" />
         </div>
     </div>
 </template>
@@ -22,6 +22,11 @@ import KvmMjpegPlayer from './KvmMjpegPlayer.vue';
 import { VideoStreamEnum } from '@/models/kvm.model';
 import { ref } from 'vue';
 import KvmWebRtcPlayer from './KvmWebRtcPlayer.vue';
+import { useWsApiSocketMsgs } from '@/hooks/useSocketMsgs';
+import { useMsgStore } from '@/stores/message';
+
+const apiMsg = useWsApiSocketMsgs()
+const state = useMsgStore()
 
 const mode = ref(VideoStreamEnum.WEBRTC);
 
@@ -30,6 +35,7 @@ const mode = ref(VideoStreamEnum.WEBRTC);
 <style lang="scss" scoped>
 .kvm-page-container {
     overflow: auto;
+
     .kvm-page-content {
         height: 100%;
         padding-top: 50px;

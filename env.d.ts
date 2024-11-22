@@ -7,4 +7,14 @@ declare global {
     interface Window {
         log: Console['log']
     }
+    interface WebSocket {
+        sendHidedEvent: (event: any) => void
+    }
+
+    type MediaProvider = MediaStream & MediaSource & Blob;
+
+    interface HTMLMediaElement {
+        srcObject: MediaProvider;
+    }
+
 }
