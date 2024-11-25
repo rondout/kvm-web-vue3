@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-08-01 09:38:34
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-06 14:23:50
+ * @LastEditTime: 2024-11-25 16:30:49
  * @FilePath: \kvm-web-vue3\src\stores\kvm.ts
  * @Description: 
  */
@@ -18,6 +18,7 @@ export const useKvmStore = defineStore('kvm', () => {
 
   const kvmInfo = ref<KvmInfo>()
   const kvmInfoLoading = ref(false)
+  const streamState = ref(false)
 
   const getKvmInfo = async (withParams = true) => {
     try {
@@ -70,5 +71,16 @@ export const useKvmStore = defineStore('kvm', () => {
     return appList.filter(item => !!item)
   })
 
-  return { kvmInfo, kvmInfoLoading, getKvmInfo, apps }
+  const setStreamState = (state: boolean) => {
+    streamState.value = state
+  }
+
+  const streamStateTitle = computed(() => {
+    if (streamState.value) {
+      return "Stream is active"
+    }
+    return "Stream inactive"
+  })
+
+  return { kvmInfo, kvmInfoLoading, getKvmInfo, apps, streamState, streamStateTitle, setStreamState }
 })

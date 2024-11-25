@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-16 11:28:26
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-25 15:37:02
+ * @LastEditTime: 2024-11-25 16:12:19
  * @FilePath: \kvm-web-vue3\src\stores\message.ts
  * @Description: 
  */
@@ -10,7 +10,7 @@ import { WebSocketService } from "@/api/websocket"
 import { WsEventType, WsMessage } from "@/models/kvm.model"
 import { HidEventState, StreamEventState } from "@/models/state.model"
 import { defineStore } from "pinia"
-import { reactive, ref } from "vue"
+import { computed, reactive, ref } from "vue"
 
 export const useMsgStore = defineStore('msg', () => {
     const msgs = ref<WsMessage[]>([])
@@ -21,6 +21,8 @@ export const useMsgStore = defineStore('msg', () => {
     const systemState = ref<StreamEventState>()
     const extraState = ref<StreamEventState>()
     const hidState = ref<HidEventState>()
+    /** 在线状态 */
+    const connected = computed(() => !!sockets.apiWS)
 
     const sockets = reactive({
         apiWS: null as WebSocketService,
@@ -85,6 +87,7 @@ export const useMsgStore = defineStore('msg', () => {
         metaState,
         systemState,
         extraState,
-        sockets
+        sockets,
+        connected
     })
 })

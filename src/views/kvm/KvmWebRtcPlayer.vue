@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-16 10:39:46
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-25 14:58:47
+ * @LastEditTime: 2024-11-25 16:31:08
  * @FilePath: \kvm-web-vue3\src\views\kvm\KvmWebRtcPlayer.vue
  * @Description: 
 -->
@@ -32,12 +32,14 @@ import { KeyboardEventHandler } from '@/models/keyboard.model';
 import { OrientationOptionList, OrientationType } from '@/models/kvm.model';
 import { MouseEventHandler } from '@/models/mouse.model';
 import { StreamEventState } from '@/models/state.model';
+import { useKvmStore } from '@/stores/kvm';
 import { Janus } from '@/utils/janus';
 import { GlRadioButtons } from '@gl/main/components';
 import { computed, onMounted, reactive, ref } from 'vue';
 
 const props = defineProps<{ streamState?: StreamEventState }>()
 const streamBoxRef = ref<HTMLElement>()
+const kvmStore = useKvmStore()
 
 // useJanusWsSocketMsgs()
 const state = reactive({
@@ -80,11 +82,11 @@ const resolutionText = computed(() => {
     }
 })
 
-const setActive = (...args: any) => {
-    log('setActive', args)
+const setActive = () => {
+    kvmStore.setStreamState(true)
 }
-const setInactive = (...args: any) => {
-    log('setInactive', args)
+const setInactive = () => {
+    kvmStore.setStreamState(false)
 }
 const setInfo = (...args: any) => {
     // log('setInfo', args)
