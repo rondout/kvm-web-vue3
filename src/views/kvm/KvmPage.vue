@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-10-16 10:17:54
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-21 11:34:22
+ * @LastEditTime: 2024-11-25 16:02:14
  * @FilePath: \kvm-web-vue3\src\views\kvm\KvmPage.vue
  * @Description: 
 -->
@@ -11,7 +11,7 @@
         <KvmPageHeader v-model:mode="mode" />
         <div class="kvm-page-content">
             <!-- <KvmMjpegPlayer v-if="mode === VideoStreamEnum.MJPEG" /> -->
-            <KvmWebRtcPlayer :state="state.streamerState" v-if="mode === VideoStreamEnum.WEBRTC" />
+            <KvmWebRtcPlayer :streamState="state.streamerState" v-if="mode === VideoStreamEnum.WEBRTC" />
         </div>
     </div>
 </template>

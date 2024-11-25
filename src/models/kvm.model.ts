@@ -99,30 +99,6 @@ export enum WsEventType {
     STREAMER_OCR_STATE = "streamer_ocr_state",
 }
 
-export interface StreamStateEventInfo {
-    limits: {
-        desired_fps: { min: number; max: number };
-        h264_bitrate: { min: number; max: number };
-        h264_gop: { min: number; max: number };
-    };
-    params: { desired_fps: number; quality: number; h264_bitrate: number; h264_gop: number };
-    snapshot: { saved: null };
-    streamer: {
-        instance_id: "";
-        encoder: { type: "M2M-IMAGE"; quality: number };
-        h264: { bitrate: number; gop: number; online: boolean; fps: number };
-        sinks: { jpeg: { has_clients: false }; h264: { has_clients: boolean } };
-        source: {
-            resolution: { width: number; height: number };
-            online: boolean;
-            desired_fps: number;
-            captured_fps: number;
-        };
-        stream: { queued_fps: number; clients: number; clients_stat: {} };
-    };
-    features: { quality: boolean; resolution: false; h264: boolean };
-}
-
 export interface WsMessage<T = any> {
     event_type: WsEventType;
     event: T;

@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-11-21 14:43:06
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-21 15:04:49
+ * @LastEditTime: 2024-11-25 14:22:10
  * @FilePath: \kvm-web-vue3\src\models\session.model.ts
  * @Description: 
  */
@@ -212,6 +212,8 @@ export function sendHidEvent(ws, { event_type, event }) {
         let data = __ascii_encoder.encode("\x01\x00" + event.key);
         data[1] = (event.state ? 1 : 0);
         ws.send(data);
+        console.log(data, {event_type, event});
+        
 
     } else if (event_type == "mouse_button") {
         let data = __ascii_encoder.encode("\x02\x00" + event.button);

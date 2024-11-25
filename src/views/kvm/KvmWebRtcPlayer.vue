@@ -2,22 +2,22 @@
  * @Author: shufei.han
  * @Date: 2024-10-16 10:39:46
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-22 16:53:36
+ * @LastEditTime: 2024-11-25 14:58:47
  * @FilePath: \kvm-web-vue3\src\views\kvm\KvmWebRtcPlayer.vue
  * @Description: 
 -->
 <template>
     <div class="kvm-webRtc-player-container full-height">
-        <div class="video-container full-height flex">
+        <div class="video-container full-height flex items-start">
             <div class="video-content">
                 <!-- <p>{{ props.state }}</p> -->
-                 <GlRadioButtons :options="OrientationOptionList" v-model:value="state.orient" @input="handleRadioChange" />
+                 <GlRadioButtons style="width: 1000px;" :options="OrientationOptionList" v-model:value="state.orient" @input="handleRadioChange" />
                 <p>
                     <span>{{ resolutionText }}</span>
                     <span style="padding: 0 8px;">{{ '/' }}</span>
                     <span>{{ fpsStreamInfo }}</span>
                 </p>
-                <div ref="streamBoxRef" id="stream-box">
+                <div ref="streamBoxRef" id="stream-box" tabindex="-1">
                     <video id="stream-video" autoplay muted></video>
                 </div>
             </div>
@@ -28,13 +28,15 @@
 <script setup lang="ts">
 import { useJanusWsSocketMsgs } from '@/hooks/useSocketMsgs';
 import { JanusStreamer } from '@/models/janus.model';
-import { OrientationOptionList, OrientationType, StreamStateEventInfo } from '@/models/kvm.model';
+import { KeyboardEventHandler } from '@/models/keyboard.model';
+import { OrientationOptionList, OrientationType } from '@/models/kvm.model';
 import { MouseEventHandler } from '@/models/mouse.model';
+import { StreamEventState } from '@/models/state.model';
 import { Janus } from '@/utils/janus';
 import { GlRadioButtons } from '@gl/main/components';
 import { computed, onMounted, reactive, ref } from 'vue';
 
-const props = defineProps<{ state: StreamStateEventInfo }>()
+const props = defineProps<{ streamState?: StreamEventState }>()
 const streamBoxRef = ref<HTMLElement>()
 
 // useJanusWsSocketMsgs()
@@ -44,6 +46,7 @@ const state = reactive({
     info: [],
     janus: {} as JanusStreamer,
     mouseHandler: null as MouseEventHandler,
+    keyboardHandler: null as KeyboardEventHandler,
 })
 
 const fpsStreamInfo = computed(() => {
@@ -70,8 +73,8 @@ const resolutionText = computed(() => {
 		// 	}
 		// }
         let title = state.janus?.getName()
-        const { width, height } = props.state.streamer.source.resolution
-        return `${title}${width}x${height}`
+        const { width, height } = props.streamState.streamer.source.resolution
+        return `${title} - ${width}x${height}`
     } catch (error) {
         return ''
     }
@@ -86,6 +89,15 @@ const setInactive = (...args: any) => {
 const setInfo = (...args: any) => {
     // log('setInfo', args)
     state.info = args
+}
+
+const focusInOut = (event: FocusEvent, isFocus: boolean) => {
+
+}
+
+const initWindowEvent = () => {
+    window.addEventListener('focusin', (event) => focusInOut(event, true))
+    window.addEventListener('focusout', (event) => focusInOut(event, false))
 }
 
 const init = () => {
@@ -111,9 +123,9 @@ onMounted(() => {
     //     }
     // })
     init()
-    console.log("WWWWWWWWWWWWWWWWWWW", streamBoxRef.value);
-    
+    initWindowEvent()
     state.mouseHandler = new MouseEventHandler(streamBoxRef.value)
+    state.keyboardHandler = new KeyboardEventHandler(streamBoxRef.value)
 })
 
 </script>
@@ -126,6 +138,7 @@ onMounted(() => {
     overflow: hidden;
 
     .video-container {
+        padding-top: 64px;
         .video-content {
             max-width: 1000px;
             max-height: 500px;

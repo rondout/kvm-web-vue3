@@ -2,12 +2,13 @@
  * @Author: shufei.han
  * @Date: 2024-10-16 11:28:26
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-21 16:12:19
+ * @LastEditTime: 2024-11-25 15:37:02
  * @FilePath: \kvm-web-vue3\src\stores\message.ts
  * @Description: 
  */
 import { WebSocketService } from "@/api/websocket"
-import { StreamStateEventInfo, WsEventType, WsMessage } from "@/models/kvm.model"
+import { WsEventType, WsMessage } from "@/models/kvm.model"
+import { HidEventState, StreamEventState } from "@/models/state.model"
 import { defineStore } from "pinia"
 import { reactive, ref } from "vue"
 
@@ -15,10 +16,11 @@ export const useMsgStore = defineStore('msg', () => {
     const msgs = ref<WsMessage[]>([])
     const latestWsApiMessage = ref<WsMessage>()
     const latestJanusApiMessage = ref<WsMessage>()
-    const streamerState = ref<StreamStateEventInfo>()
-    const metaState = ref<StreamStateEventInfo>()
-    const systemState = ref<StreamStateEventInfo>()
-    const extraState = ref<StreamStateEventInfo>()
+    const streamerState = ref<StreamEventState>()
+    const metaState = ref<StreamEventState>()
+    const systemState = ref<StreamEventState>()
+    const extraState = ref<StreamEventState>()
+    const hidState = ref<HidEventState>()
 
     const sockets = reactive({
         apiWS: null as WebSocketService,
@@ -66,6 +68,9 @@ export const useMsgStore = defineStore('msg', () => {
                 break
             case WsEventType.INFO_SYSTEM_STATE:
                 systemState.value = data.event
+                break
+            case WsEventType.HID_STATE:
+                hidState.value = data.event
                 break
         }
     }
