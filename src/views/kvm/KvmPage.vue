@@ -2,12 +2,12 @@
  * @Author: shufei.han
  * @Date: 2024-10-16 10:17:54
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-25 16:02:14
+ * @LastEditTime: 2024-11-25 17:41:06
  * @FilePath: \kvm-web-vue3\src\views\kvm\KvmPage.vue
  * @Description: 
 -->
 <template>
-    <div class="kvm-page-container full-height">
+    <div class="kvm-page-container full-height" z-index="-1">
         <KvmPageHeader v-model:mode="mode" />
         <div class="kvm-page-content">
             <!-- <KvmMjpegPlayer v-if="mode === VideoStreamEnum.MJPEG" /> -->
