@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-11-20 16:21:48
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-11-22 18:21:35
+ * @LastEditTime: 2024-11-26 14:30:27
  * @FilePath: \kvm-web-vue3\src\models\janus.model.ts
  * @Description: 
  */
@@ -232,7 +232,7 @@ export class JanusStreamer {
     ensureJanus(internal?: boolean) {
         log('Ensuring Janus', internal)
         this.janus = new this._Janus({
-            server: 'ws://localhost:5173/janus/ws',
+            server: `ws://${location.host}/janus/ws`,
             success: () => {
                 this.attachJanus()
             },

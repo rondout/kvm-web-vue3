@@ -19,6 +19,7 @@ export const useKvmStore = defineStore('kvm', () => {
   const kvmInfo = ref<KvmInfo>()
   const kvmInfoLoading = ref(false)
   const streamState = ref(false)
+  const mouseEnabled = ref(false)
 
   const getKvmInfo = async (withParams = true) => {
     try {
@@ -82,5 +83,9 @@ export const useKvmStore = defineStore('kvm', () => {
     return "Stream inactive"
   })
 
-  return { kvmInfo, kvmInfoLoading, getKvmInfo, apps, streamState, streamStateTitle, setStreamState }
+  const setMouseEnabled = (state: boolean) => {
+    mouseEnabled.value = state
+  }
+
+  return { kvmInfo, kvmInfoLoading, getKvmInfo, apps, streamState, streamStateTitle, setStreamState, mouseEnabled, setMouseEnabled }
 })
